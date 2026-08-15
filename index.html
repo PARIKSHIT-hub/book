@@ -30,19 +30,31 @@
     .page{
       position:absolute;inset:0;overflow:hidden;
       background:
-        linear-gradient(90deg,#d8c4a3aa 0,transparent 3%,transparent 97%,#cbb58f55 100%),
-        repeating-linear-gradient(0deg,transparent 0,transparent 31px,#8d6c4710 32px),
+        linear-gradient(90deg, rgba(0,0,0,0.05) 0, transparent 5%, transparent 95%, rgba(0,0,0,0.05) 100%),
+        repeating-linear-gradient(0deg, transparent 0, transparent 31px, rgba(141,108,71,0.05) 32px),
         var(--paper);
       border:1px solid #d5bf99;
       border-radius:4px 12px 12px 4px;
-      padding:15px 18px;
-      box-shadow:inset 18px 0 30px #79583814,inset -5px 0 15px #79583810,0 8px 20px #0005;
+      padding:20px 25px;
+      box-shadow:
+        inset 20px 0 35px rgba(0,0,0,0.08),
+        inset -5px 0 15px rgba(0,0,0,0.04),
+        0 10px 25px rgba(0,0,0,0.4);
       transform-origin:left center;
       transition:transform .9s cubic-bezier(.2,.8,.15,1),z-index 0s .42s;
     }
+    /* Page stacked edge effect */
+    .page:before {
+      content: ""; position: absolute; top: 0; bottom: 0; right: -4px; width: 4px;
+      background: linear-gradient(to right, #ddd, #fff 2px, #ddd 3px, #fff);
+      border-radius: 0 4px 4px 0; border: 1px solid #d5bf99; border-left: 0;
+      z-index: -1;
+    }
     .page:after{
-      content:"";position:absolute;top:0;bottom:0;left:13px;width:1px;
-      background:#9d784b22;pointer-events:none;
+      content:"";position:absolute;top:0;bottom:0;left:15px;width:2px;
+      background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+      border-left: 1px solid rgba(0,0,0,0.05);
+      pointer-events:none;
     }
     .page.flipped{transform:rotateY(-180deg);z-index:0}
     .cover{
@@ -73,7 +85,18 @@
       font:11px Arial,sans-serif;letter-spacing:1px;
       overflow:hidden;
     }
-    .chapter{max-width:820px;margin:auto;height:100%;display:flex;flex-direction:column;justify-content:flex-start;padding-top:5px}
+    .chapter{
+      max-width:820px;margin:auto;height:100%;
+      display:flex;flex-direction:column;justify-content:flex-start;
+      padding: 10px 0;
+      position: relative;
+    }
+    .chapter:before, .chapter:after {
+      content: "❦"; position: absolute; color: rgba(185,145,87,0.2); font-size: 20px;
+    }
+    .chapter:before { top: 0; right: 0; }
+    .chapter:after { bottom: 0; left: 0; transform: rotate(180deg); }
+
     .kicker{
       font:9px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;
       color:#a77b48;margin-bottom:6px;
@@ -83,18 +106,10 @@
       margin:0 0 3px;letter-spacing:-0.5px;
     }
     .date{font-style:italic;color:var(--muted);margin-bottom:8px;font-size:12px}
-    .chapter p{font-size:clamp(12px,1.3vw,14.5px);line-height:1.45;margin:0 0 8px;max-width:760px}
+    .chapter p{font-size:clamp(11px,1.2vw,14px);line-height:1.4;margin:0 0 6px;max-width:760px}
     .highlight{
       font-size:clamp(14px,2vw,18px)!important;line-height:1.25!important;
       text-align:center;margin:12px auto!important;color:#5a3033;
-      cursor: help;
-      transition: filter 0.3s, opacity 0.3s;
-      filter: blur(4px);
-      opacity: 0.5;
-    }
-    .highlight:hover {
-      filter: blur(0);
-      opacity: 1;
     }
     .sticker {
       position: absolute;
@@ -259,29 +274,35 @@
 
   <style>
     :root{
-     --sky:#87CEEB;
-     --sky2:#4FB3D9;
-     --sky3:#DDF6FF;
-     --red:#C94B57;
-     --red2:#E87882;
-     --red3:#FFE1E4;
-     --ink:#17313B;
-     --paper:#F8FDFF;
-     --paper2:#EAF8FD;
+      --sky:#87CEEB;
+      --sky2:#4FB3D9;
+      --sky3:#E1F5FE;
+      --red:#D32F2F;
+      --red2:#EF5350;
+      --red3:#FFEBEE;
+      --ink:#1A237E;
+      --paper:#FFFDF5;
+      --paper2:#F5F5F5;
     }
     body{
      background:
-       radial-gradient(circle at 15% 15%,rgba(135,206,235,.28),transparent 28%),
-       radial-gradient(circle at 85% 80%,rgba(201,75,87,.24),transparent 30%),
-       linear-gradient(135deg,#dff7ff,#fff0f2 52%,#dff7ff);
-     color:var(--ink);
+       radial-gradient(circle at 20% 20%, rgba(135, 206, 235, 0.15), transparent 40%),
+       radial-gradient(circle at 80% 80%, rgba(211, 47, 47, 0.12), transparent 40%),
+       linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+     color: var(--ink);
     }
     .book{filter:drop-shadow(0 24px 55px rgba(201,75,87,.20))}
     .page{
      background:
-       radial-gradient(circle at 90% 10%,rgba(135,206,235,.16),transparent 25%),
-       linear-gradient(110deg,var(--paper),#fff);
-     border-color:rgba(79,179,217,.45);
+       linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0) 20%),
+       linear-gradient(to right, #ffffff, var(--paper));
+     border: 1px solid rgba(135, 206, 235, 0.3);
+     box-shadow:
+       inset 0 0 50px rgba(135, 206, 235, 0.05),
+       0 15px 35px rgba(0,0,0,0.3);
+    }
+    .page section.chapter {
+      background: var(--paper);
     }
     .page:before{border-color:rgba(201,75,87,.16)}
     .chapter h2{color:var(--red)!important}
@@ -396,14 +417,23 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <div class="chapter"><div class="kicker">💻 Chapter 5</div><h2>💻 Online Classes</h2>
   <p>I looked at you in the online class.</p>
   <p>But you...</p><p class="highlight">Gadhi kahi ki 😂 in Aditya Sir's voice.</p>
-  <p>You tried to hide yourself .</p></div>`},
+  <p>You tried to hide yourself .</p>
+  <div class="sticker" style="top:20%; right:10%">💻</div>
+  <div class="sticker" style="bottom:25%; left:15%">🙈</div>
+  </div>`},
   {title:"Your Name",html:`
   <div class="chapter"><div class="kicker">😏 Chapter 6</div><h2>💌 Your Name</h2>
-  <p>😏 My friends started teasing me by your name.</p></div>`},
+  <p>😏 My friends started teasing me by your name.</p>
+  <div class="sticker" style="top:40%; right:20%; font-size:40px">💌</div>
+  <div class="sticker" style="bottom:10%; left:10%">😏</div>
+  </div>`},
   {title:"The Same Day",date:"9 April 2024",html:`
   <div class="chapter"><div class="kicker">🎓 Chapter 7</div><h2>📅 The Same Day</h2><div class="date">JEE Main Session 2 · 9 April 2024</div>
   <p>📅 Same date.</p><p>🕐 Same shift.</p><p>📍 Same examination centre.</p>
-  <p>Another coincidence in our story.</p></div>`},
+  <p>Another coincidence in our story.</p>
+  <div class="sticker" style="top:10%; right:10%">🎓</div>
+  <div class="sticker" style="bottom:15%; left:20%">📅</div>
+  </div>`},
   {title:"Shukla Ji",html:`
   <div class="chapter"><div class="kicker">😂 Chapter 8</div><h2>😄 Shukla Ji</h2>
   <p>Shukla Ji teasing me with a smile, saying <b>“Upadhyay Ji.”</b> 😂</p>
@@ -411,28 +441,43 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p>“Vo bag ka wahan aise hi fek ke aa jana, fir tumhe bulake lana.”</p>
   <p>However, you paid for yourself.</p><p><b>Khuddar bachchi. 😂</b></p>
   <p>Waise aaj bhi tum hi payment karti ho. 😂😂😂</p>
-  <p>I am in debt. I will pay you back by taking you to so many places where we will explore together.</p></div>`},
+  <p>I am in debt. I will pay you back by taking you to so many places where we will explore together.</p>
+  <div class="sticker" style="top:5%; right:5%">😂</div>
+  <div class="sticker" style="bottom:10%; left:5%">👜</div>
+  </div>`},
   {title:"A Little Conversation",html:`
   <div class="chapter"><div class="kicker">💬 Chapter 9</div><h2>💬 A Little Conversation</h2>
   <p>Then came the JEE Advanced paper.</p>
   <p>After that, we started having a little conversation. Maybe not every day.</p>
-  <p>Just little conversations, day after day.</p></div>`},
+  <p>Just little conversations, day after day.</p>
+  <div class="sticker" style="top:50%; right:15%">💬</div>
+  <div class="sticker" style="bottom:20%; left:15%">✨</div>
+  </div>`},
   {title:"The Proposal",html:`
   <div class="chapter"><div class="kicker">❤️ Chapter 10</div><h2>💌 The Proposal</h2>
   <p>💌 Then came my proposal to you.</p>
   <p>And what did you do?</p><p class="highlight">You slept without replying. 😂😂😂</p>
   <p>I was expecting to be blocked from you. You didn't do that that time, but now you do after every fight. 😂😂</p>
-  <p>Sorry for the fights btw.</p></div>`},
+  <p>Sorry for the fights btw.</p>
+  <div class="sticker" style="top:10%; right:10%; font-size:45px">❤️</div>
+  <div class="sticker" style="bottom:15%; left:10%">😴</div>
+  </div>`},
   {title:"Our Everyday Days",html:`
   <div class="chapter"><div class="kicker">🌻 Chapter 11</div><h2>🏡 Our Everyday Days</h2>
   <p>Then came our daily routine.</p>
   <p>But after that, I did so many blunders, kept you in tears, and I am really ashamed and sorry for that.</p>
-  <p>I don't have enough words to apologize for all of it.</p></div>`},
+  <p>I don't have enough words to apologize for all of it.</p>
+  <div class="sticker" style="top:15%; right:20%">🌻</div>
+  <div class="sticker" style="bottom:15%; left:20%">🏡</div>
+  </div>`},
   {title:"Us",html:`
   <div class="chapter"><div class="kicker">❤️ Chapter 12</div><h2>💑 Us</h2>
   <p>❤️ Then our relationship started and we became a couple.</p>
   <p>I had many bad habits which I left because of you.</p>
-  <p class="highlight">You are a gem. 💎</p></div>`},
+  <p class="highlight">You are a gem. 💎</p>
+  <div class="sticker" style="top:50%; right:10%">💑</div>
+  <div class="sticker" style="bottom:10%; left:15%">💎</div>
+  </div>`},
   {title:"Our First Date",date:"11 July 2025 · Lucknow",html:`
   <div class="chapter"><div class="kicker">🥰 Chapter 13</div><h2>🌹 Our First Date</h2><div class="date">11 July 2025 · Lucknow</div>
   <p>👭 You came with your sister in Lucknow. 🌧️ It was raining, but somehow I managed to meet you.</p>
@@ -442,12 +487,19 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p>📍 We met at Palassio, then went to Hanuman Dham. 🎁 I gave you the hand bracelet.</p>
   <p>Those selfies with you, those blushes — I still remember them.</p>
   <p>That jhule wala video.</p>
-  <p>And taking that ice cream wrapper from you... as I told you many times, it took so much guts. 😭😭😭</p></div>`},
+  <p>And taking that ice cream wrapper from you... as I told you many times, it took so much guts. 😭😭😭</p>
+  <div class="sticker" style="top:10%; right:5%">🌧️</div>
+  <div class="sticker" style="bottom:10%; left:10%">🍟</div>
+  <div class="sticker" style="top:50%; right:15%">🎡</div>
+  </div>`},
   {title:"Our First Big Fight",date:"Around 24 July 2025",html:`
   <div class="chapter"><div class="kicker">😤 Chapter 14</div><h2>⚡ Our First Big Fight</h2><div class="date">Around 24 July 2025</div>
   <p>Then came our first big fight after we got into a relationship.</p>
   <p>And maybe it was necessary to let me know that I approached you, so I should keep my attitude in my pocket. 😂😂</p>
-  <p>A lesson I probably needed to learn.</p><p>And many more lessons...</p></div>`},
+  <p>A lesson I probably needed to learn.</p><p>And many more lessons...</p>
+  <div class="sticker" style="top:15%; right:15%">⚡</div>
+  <div class="sticker" style="bottom:15%; left:15%">😤</div>
+  </div>`},
   {title:"Another Day in Lucknow",date:"25 December 2025",html:`
   <div class="chapter"><div class="kicker">🌆 Chapter 15</div><h2>❤️ Another Day in Lucknow</h2><div class="date">25 December 2025</div>
   <p>This time, you came alone.</p><p>We had already planned our whole day.</p>
@@ -457,7 +509,11 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p>Then Cinepolis, and we watched <i>Tu Meri Main Tera Tu Meri Main Tera</i>.</p>
   <p>Then we came out in between and roamed in Janeshwar Mishra Park.</p>
   <p>And in the end again, there was rubbish behaviour from my side.</p>
-  <p>I look back and it feels very disappointing.</p><p>Then after dropping you, I kissed your hands. That was great, peak.</p></div>`},
+  <p>I look back and it feels very disappointing.</p><p>Then after dropping you, I kissed your hands. That was great, peak.</p>
+  <div class="sticker" style="top:5%; right:5%">🎬</div>
+  <div class="sticker" style="bottom:10%; left:10%">💐</div>
+  <div class="sticker" style="top:50%; right:15%">🎡</div>
+  </div>`},
   {title:"A Day Together",date:"16 January 2026",html:`
   <div class="chapter"><div class="kicker">🙏 Chapter 16</div><h2>❤️ A Day Together</h2><div class="date">16 January 2026</div>
   <p>Then I met you again.</p><p>It was an amazing day. We spent the whole day together.</p>
@@ -466,7 +522,11 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p>Then we went to City Centre and explored it together. We took many pictures there.</p>
   <p>We had chole bhature and momos, and later watched <i>Happy Patel Khatarnak Jasoos</i>. Actually, movie first.</p>
   <p>I kissed you so many times… 🫠🫠🫠🫠🫠</p><p>And while coming back, you gently massaged my head.</p>
-  <p class="highlight">Ohhh ji… love you ji.</p></div>`},
+  <p class="highlight">Ohhh ji… love you ji.</p>
+  <div class="sticker" style="top:10%; right:10%">🙏</div>
+  <div class="sticker" style="bottom:20%; left:10%">🥟</div>
+  <div class="sticker" style="top:60%; right:15%">🫠</div>
+  </div>`},
   {title:"The Next Day",date:"17 January 2026",html:`
   <div class="chapter"><div class="kicker">🎁 Chapter 17</div><h2>❤️ The Next Day</h2><div class="date">17 January 2026</div>
   <p>Then I came inside your college.</p><p>🪑 We sat on that mini PMC and had a great time together.</p>
@@ -479,13 +539,37 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p>When you felt uncomfortable, I am sorry for not respecting that properly.</p>
   <p>Then we sat there but had nothing to say.</p>
   <p>Then we came below, charged your mobile, and went to La Pino'z.</p>
-  <p>We had a great time there.</p><p><b>Waise maine baal kharab kar diye the 😂😂😂</b></p></div>`},
-  {title:"The Best Memory",date:"17 April 2026",html:`<div class="chapter"><div class="kicker">❤️ Chapter 18</div><h2>🥹 The Best Memory</h2><div class="date">17 April 2026</div><p>Then we met again.</p><p>After everything, I was so sad.</p><p>And then you just said, <b>“Aja.”</b> 🥹</p><p>I thought you just wanted to delete all the pictures.</p><p>But then... you held my hand.</p><p>And that moment was just <b>amazing</b>. ❤️</p><p>I loved it.</p><p>I don't think I have ever felt better than I did in that moment.</p><p><b>Never.</b></p><p>Out of everything we've experienced together... this was our best memory. 🫶</p></div>`},
-  {title:"The Next Few Days",date:"18–20 April 2026",html:`<div class="chapter"><div class="kicker">🎬 Chapter 19</div><h2>🎬 The Next Few Days</h2><div class="date">After 17 April 2026</div><p>The very next day was the NPTEL exam.</p><p>We went there together, and after that, we visited the mall and watched <i>Bhoot Bangla</i>. 🎬</p><p>And somehow, this became the only movie where we didn't even hold hands. 😂</p><p>Because... <b>it was a big fight.</b> 😭😂</p><p>Then we came to Bihta.</p><p>The next day, we tried to go to Patna, but couldn't because of some <b>“min”</b>. 😭</p><p>So instead, we enjoyed our time in Bihta itself.</p><p>We watched <i>Dacoit</i>. 🎬</p><p>And obviously... I was calling it <b>“daaacoitt”</b>. 😂😂😂</p><p>Another few days. Another few memories. ❤️</p></div>`},
-  {title:"And The Story Continues",date:"6 June 2026",html:`<div class="chapter"><div class="kicker">🌹 Chapter 20</div><h2>❤️ And The Story Continues</h2><div class="date">6 June 2026</div><p>Then we had fights in between.</p><p>And eventually, we stopped talking.</p><p>Your last message from that time still makes me cry.</p><p>I've cried many times reading that message. 😭</p><p>Then, on <b>4 June</b>, you sent me a gift.</p><p>A flower from you. 🌹</p><p>A lovely rose.</p><p>Then on <b>5 June</b>, the lovely photo frame of us. 🥹❤️</p><p>I loved it sooo sooo much.</p><p>And then came <b>6 June 2026</b>.</p><p>You wished me <b>Happy Birthday</b>. 🎂❤️</p><p>And somehow... after everything, <b>the story continues.</b></p><p>And I hope this story... <b>never ends.</b> ♾️❤️</p><p class="highlight">To be continued... 📖✨</p></div>`},
-  {title:"17 July 2026",date:"17 July 2026 · Lucknow",html:`<div class="chapter"><div class="kicker">🌆 Chapter 21</div><h2>❤️ 17 July 2026</h2><div class="date">Lucknow</div><p>Then we met again in Lucknow.</p><p>We went to the mall near the bus stand and had a Sprite and shake. 🥤</p><p>Then we went to the escape room.</p><p>It was so much fun. 😂❤️</p><p>We took pictures there too. 📸</p><p>Then came that <b>Fresh Factory thing</b> again. 😂😂😂</p><p>After that, we went to Riverfront Park and spent some time together.</p><p>There were so many little moments there that I didn't want the day to end.</p><p>I just wanted to stay there for the whole night. 🥹</p><p>Then came the <b>mobile switched-off</b> situation. 😭</p><p>Somehow, we managed to drop you at Mal Avenue.</p><p>And you had to tell a lie at home.</p><p>It was a really tough situation.</p><p>But somehow... <b>we made another memory. ❤️</b></p></div>`},
-  {title:"Seeing You on Stage",date:"18 July 2026",html:`<div class="chapter"><div class="kicker">🎤 Chapter 22</div><h2>😂 Seeing You on Stage</h2><div class="date">18 July 2026</div><p>Then came the next day.</p><p>I saw you on stage. 🎤✨</p><p>And I just couldn't control my laugh. 😂😂</p><p>Seeing you there on stage was such a different feeling.</p><p>Just one look at you... and there I was, laughing again. ❤️</p><p>Another small moment.</p><p>Another memory.</p><p><b>18 July 2026 — saved forever. 📖✨</b></p></div>`},
-  {title:"The Unexpected Day",date:"19 July 2026",html:`<div class="chapter"><div class="kicker">🎬 Chapter 23</div><h2>❤️ The Unexpected Day</h2><div class="date">19 July 2026</div><p>Everything went completely unexpected. You got your periods, and plans changed. We went to the movie theatre—just us. We spent that time being close.</p><p>Those khatarnak level ki kisses and licking... 🫠 and those amazing moments when you came on my chest and when I was fully on yours. Such a childish and comforting feeling.</p><p>And when you licked me... ohhhh, that current! ⚡ And that chocolate kiss... ahhh. 🍫❤️</p><p>It was an unexpected day, but it became a beautiful memory.</p><p><b>Another page in our story. 📖❤️</b></p></div>`},
+  <p>We had a great time there.</p><p><b>Waise maine baal kharab kar diye the 😂😂😂</b></p>
+  <div class="sticker" style="top:15%; right:5%">🎁</div>
+  <div class="sticker" style="bottom:10%; left:10%">🍜</div>
+  <div class="sticker" style="top:65%; right:15%">🤗</div>
+  </div>`},
+  {title:"The Best Memory",date:"17 April 2026",html:`<div class="chapter"><div class="kicker">❤️ Chapter 18</div><h2>🥹 The Best Memory</h2><div class="date">17 April 2026</div><p>Then we met again.</p><p>After everything, I was so sad.</p><p>And then you just said, <b>“Aja.”</b> 🥹</p><p>I thought you just wanted to delete all the pictures.</p><p>But then... you held my hand.</p><p>And that moment was just <b>amazing</b>. ❤️</p><p>I loved it.</p><p>I don't think I have ever felt better than I did in that moment.</p><p><b>Never.</b></p><p>Out of everything we've experienced together... this was our best memory. 🫶</p>
+  <div class="sticker" style="top:50%; right:10%; font-size:45px">🫶</div>
+  <div class="sticker" style="bottom:15%; left:15%">🥹</div>
+  </div>`},
+  {title:"The Next Few Days",date:"18–20 April 2026",html:`<div class="chapter"><div class="kicker">🎬 Chapter 19</div><h2>🎬 The Next Few Days</h2><div class="date">After 17 April 2026</div><p>The very next day was the NPTEL exam.</p><p>We went there together, and after that, we visited the mall and watched <i>Bhoot Bangla</i>. 🎬</p><p>And somehow, this became the only movie where we didn't even hold hands. 😂</p><p>Because... <b>it was a big fight.</b> 😭😂</p><p>Then we presided in Bihta.</p><p>The next day, we tried to go to Patna, but couldn't because of some <b>“min”</b>. 😭</p><p>So instead, we enjoyed our time in Bihta itself.</p><p>We watched <i>Dacoit</i>. 🎬</p><p>And obviously... I was calling it <b>“daaacoitt”</b>. 😂😂😂</p><p>Another few days. Another few memories. ❤️</p>
+  <div class="sticker" style="top:20%; right:15%">👻</div>
+  <div class="sticker" style="bottom:20%; left:10%"> popcorn 🍿</div>
+  </div>`},
+  {title:"And The Story Continues",date:"6 June 2026",html:`<div class="chapter"><div class="kicker">🌹 Chapter 20</div><h2>❤️ And The Story Continues</h2><div class="date">6 June 2026</div><p>Then we had fights in between.</p><p>And eventually, we stopped talking.</p><p>Your last message from that time still makes me cry.</p><p>I've cried many times reading that message. 😭</p><p>Then, on <b>4 June</b>, you sent me a gift.</p><p>A flower from you. 🌹</p><p>A lovely rose.</p><p>Then on <b>5 June</b>, the lovely photo frame of us. 🥹❤️</p><p>I loved it sooo sooo much.</p><p>And then came <b>6 June 2026</b>.</p><p>You wished me <b>Happy Birthday</b>. 🎂❤️</p><p>And somehow... after everything, <b>the story continues.</b></p><p>And I hope this story... <b>never ends.</b> ♾️❤️</p><p class="highlight">To be continued... 📖✨</p>
+  <div class="sticker" style="top:10%; right:10%">🌹</div>
+  <div class="sticker" style="bottom:15%; left:15%; font-size:40px">♾️</div>
+  </div>`},
+  {title:"17 July 2026",date:"17 July 2026 · Lucknow",html:`<div class="chapter"><div class="kicker">🌆 Chapter 21</div><h2>❤️ 17 July 2026</h2><div class="date">Lucknow</div><p>Then we met again in Lucknow.</p><p>We went to the mall near the bus stand and had a Sprite and shake. 🥤</p><p>Then we went to the escape room.</p><p>It was so much fun. 😂❤️</p><p>We took pictures there too. 📸</p><p>Then came that <b>Fresh Factory thing</b> again. 😂😂😂</p><p>After that, we went to Riverfront Park and spent some time together.</p><p>There were so many little moments there that I didn't want the day to end.</p><p>I just wanted to stay there for the whole night. 🥹</p><p>Then came the <b>mobile switched-off</b> situation. 😭</p><p>Somehow, we managed to drop you at Mal Avenue.</p><p>And you had to tell a lie at home.</p><p>It was a really tough situation.</p><p>But somehow... <b>we made another memory. ❤️</b></p>
+  <div class="sticker" style="top:10%; right:5%">🥤</div>
+  <div class="sticker" style="bottom:10%; left:10%">📸</div>
+  <div class="sticker" style="top:55%; right:15%">⛲</div>
+  </div>`},
+  {title:"Seeing You on Stage",date:"18 July 2026",html:`<div class="chapter"><div class="kicker">🎤 Chapter 22</div><h2>😂 Seeing You on Stage</h2><div class="date">18 July 2026</div><p>Then came the next day.</p><p>I saw you on stage. 🎤✨</p><p>And I just couldn't control my laugh. 😂😂</p><p>Seeing you there on stage was such a different feeling.</p><p>Just one look at you... and there I was, laughing again. ❤️</p><p>Another small moment.</p><p>Another memory.</p><p><b>18 July 2026 — saved forever. 📖✨</b></p>
+  <div class="sticker" style="top:40%; right:15%; font-size:40px">🎤</div>
+  <div class="sticker" style="bottom:20%; left:10%">✨</div>
+  </div>`},
+  {title:"The Unexpected Day",date:"19 July 2026",html:`<div class="chapter"><div class="kicker">🎬 Chapter 23</div><h2>❤️ The Unexpected Day</h2><div class="date">19 July 2026</div><p>Everything went completely unexpected. You got your periods, and plans changed. We went to the movie theatre—just us. We spent that time being close.</p><p>Those khatarnak level ki kisses and licking... 🫠 and those amazing moments when you came on my chest and when I was fully on yours. Such a childish and comforting feeling.</p><p>And when you licked me... ohhhh, that current! ⚡ And that chocolate kiss... ahhh. 🍫❤️</p><p>It was an unexpected day, but it became a beautiful memory.</p><p><b>Another page in our story. 📖❤️</b></p>
+  <div class="sticker" style="top:25%; right:10%">⚡</div>
+  <div class="sticker" style="bottom:20%; left:15%">🍫</div>
+  <div class="sticker" style="top:60%; right:15%">🫠</div>
+  </div>`},
   {title:"Our Journey Map",html:`
   <div class="chapter"><div class="kicker">🗺️ Summary</div><h2>📍 Places of Our Story</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
@@ -507,8 +591,8 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
     </div>
   </div>
   <p class="highlight" style="margin:15px auto!important">Lucknow ➔ Bihta ➔ Patna ➔ Varanasi ➔ ❤️</p>
+  <div class="sticker" style="top:10%; right:5%">🗺️</div>
   </div>`},
-  ,
   {title:"Your Birthday",date:"16 August 2026",html:`
   <div class="chapter"><div class="kicker">🎂 Chapter 24</div><h2>❤️ Your Birthday</h2><div class="date">16 August 2026</div>
   <p>And now...</p>
@@ -520,6 +604,8 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
   <p><b>Happy Birthday. ❤️🎂</b></p>
   <p>And just like every chapter before this...</p>
   <p class="highlight">our story continues. 📖♾️</p>
+  <div class="sticker" style="top:15%; right:15%; font-size:45px">🎂</div>
+  <div class="sticker" style="bottom:15%; left:15%">🎈</div>
   </div>`}
   ];
 
@@ -597,8 +683,8 @@ backdrop-filter:blur(16px);box-shadow:0 20px 50px #0009">
 
   // Hover Heart Interaction
   document.addEventListener('mousemove', e => {
-    if (e.target.closest('.chapter p, .sticker, h2, .cover-inner, button')) {
-      if (Math.random() > 0.85) {
+    if (e.target.closest('.chapter p, .sticker, h2, .cover-inner, button, .highlight, .kicker, .date')) {
+      if (Math.random() > 0.8) {
         spawnHeart(e.clientX, e.clientY, true);
       }
     }
